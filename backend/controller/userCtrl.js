@@ -61,8 +61,7 @@ exports.registerUser = catchAsync(async (req, res, next) => {
  
   if (user) return next(new AppError('The user already exists', 401));
   const newUser = await User.create({
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
+    name: req.body.name,
     email: req.body.email,
     password: req.body.password,
     passwordConfirm:req.body.passwordConfirm

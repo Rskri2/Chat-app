@@ -5,8 +5,7 @@ import { Link } from "react-router-dom";
 import SuccessAlert from "./SuccessAlert";
 import ErrorAlert from "./ErrorAlert";
 export default function Register() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setlastName] = useState("");
+  const [name, setname] = useState("");
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
   const [passwordConfirm, setpasswordConfirm] = useState("");
@@ -18,7 +17,7 @@ export default function Register() {
   const handleLogin = (e) => {
     e.preventDefault();
     dispatch(
-      registerUser({ firstName, lastName, email, password, passwordConfirm })
+      registerUser({ name, email, password, passwordConfirm })
     );
   };
   const handleClick = () => {
@@ -34,19 +33,19 @@ export default function Register() {
     }, 5000);
   }, [error, user]);
   return (
-      <div className="lg:grid lg:min-h-screen lg:grid-cols-12  pl-20 pt-20">
-        <section className="relative flex  items-center justify-center bg-yellow-50 lg:col-span-5  xl:col-span-5 h mb-10" >
-          <img
-            alt=""
-            src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-            className="absolute inset-0 h-full w-full object-cover opacity-80"
-          />
+    <div className="lg:grid min-h-screen lg:min-h-screen lg:grid-cols-12  pl-20 pt-20 mt-[100px]">
+      <section className="relative flex  items-center justify-center bg-yellow-50 lg:col-span-5  xl:col-span-5 h ">
+        <img
+          alt=""
+          src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          className="absolute inset-0 min-h-screen w-full object-cover opacity-80"
+        />
 
-          <div className="hidden lg:relative lg:block lg:p-12">
-            <Link className="block text-white" to="/">
-              <span className="sr-only">Home</span>
-              {/* <svg
-            className="h-8 sm:h-10"
+        <div className="hidden lg:relative lg:block lg:p-12">
+          <Link className="block text-white" to="/">
+            <span className="sr-only">Home</span>
+            {/* <svg
+            className="h-9 sm:h-9"
             viewBox="0 0 28 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -56,38 +55,36 @@ export default function Register() {
               fill="currentColor"
             />
           </svg> */}
-              
-            </Link>
+          </Link>
 
-            <h2 className="mt-44 text-2xl font-bold text-black sm:text-3xl md:text-4xl text-center">
-              Welcome to EduTrack
-            </h2>
+          <h2 className="mt-56 text-2xl font-bold text-black sm:text-3xl md:text-4xl text-center">
+            Welcome to EduTrack
+          </h2>
 
-              <div className=" max-w-xl text-center mt-4 leading-relaxed text-white/90 ">
-                EduTrack is committed to supporting the educational community.
-                Sign up today to take control of your learning experience,
-                enhance your teaching methods, or manage your educational
-                organization.
-              </div>
+          <div className=" max-w-xl text-center mt-4 leading-relaxed text-white/90 ">
+            EduTrack is committed to supporting the educational community. Sign
+            up today to take control of your learning experience, enhance your
+            teaching methods, or manage your educational organization.
           </div>
-        </section>
+        </div>
+      </section>
 
-        <main className="flex items-center justify-center lg:col-span-7   xl:col-span-6 mb-10 bg-white">
-          <div className="flex flex-col items-center w-full h-5/6">
-            {visibleLogin === 1 ? (
-              <ErrorAlert error={error} visibleLogin={visibleLogin} />
-            ) : visibleLogin === 2 ? (
-              <SuccessAlert
-                message={"Account created successfully"}
-                visibleLogin={visibleLogin}
-              />
-            ) : null}
-            <div className="flex items-center justify-center  py-2 sm:px-12 lg:col-span-7  lg:py-6 xl:col-span-6 absolute top-20  w-5/12 h-5/6 ">
-              <div className="max-w-md lg:max-w-3xl flex items-center flex-col ">
-                <Link className="block text-blue-600" to="/">
-                  <span className="sr-only">Home</span>
-                  {/* <svg
-                     className="h-8 sm:h-10"
+      <div className="flex items-center justify-center lg:col-span-7 xl:col-span-6 bg-white w-full">
+        <div className="flex flex-col items-center w-full ">
+          {visibleLogin === 1 ? (
+            <ErrorAlert error={error} visibleLogin={visibleLogin} />
+          ) : visibleLogin === 2 ? (
+            <SuccessAlert
+              message={"Account created successfully"}
+              visibleLogin={visibleLogin}
+            />
+          ) : null}
+          <div className="flex items-center justify-center  py-2 sm:px-12 lg:col-span-7  lg:py-6 xl:col-span-6 absolute top-20  w-4/12 ">
+            <div className="max-w-md lg:max-w-3xl flex items-center flex-col ">
+              <Link className="block text-blue-600" to="/">
+                <span className="sr-only">Home</span>
+                {/* <svg
+                     className="h-9 sm:h-9"
                      viewBox="0 0 28 24"
                      fill="none"
                      xmlns="http://www.w3.org/2000/svg"
@@ -97,231 +94,212 @@ export default function Register() {
                        fill="currentColor"
                        />
                    </svg> */}
-                </Link>
+              </Link>
 
-                <div className="mt-6 text-sm font-bold flex justify-center text-gray-900 sm:text-2xl md:text-4xl">
+              <div className="mt-[100px] text-sm font-bold flex justify-center text-gray-900 sm:text-2xl md:text-4xl">
                 Welcome to EduTrack
+              </div>
+
+              <div className="mt-4 text-xl leading-relaxed flex justify-center text-gray-500">
+                Are you ready to join EduTrack?
+              </div>
+
+              <form
+                
+                className="mt-8 grid grid-cols-3 gap-3"
+                onSubmit={handleLogin}
+              >
+                <div className="col-span-6 ">
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-medium text-gray-600"
+                  >
+                  Full Name
+                  </label>
+
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={name}
+                    placeholder="Ram Kumar"
+                    required
+                    onChange={(e) => setname(e.target.value)}
+                    className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm h-9"
+                  />
                 </div>
 
-                <div className="mt-4 text-xl leading-relaxed flex justify-center text-gray-500">
-                  Are you ready to join EduTrack?
+                <div className="col-span-6 ">
+                  <label
+                    htmlFor="Email"
+                    className="block text-sm font-medium text-gray-600"
+                  >
+                    Email
+                  </label>
+
+                  <input
+                    type="email"
+                    id="Email"
+                    name="email"
+                    value={email}
+                    placeholder="ramkr@email.com"
+                    required
+                    onChange={(e) => setemail(e.target.value)}
+                    className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm h-9"
+                  />
                 </div>
 
-                <form
-                  action="#"
-                  className="mt-8 grid grid-cols-6 gap-6"
-                  onSubmit={handleLogin}
-                >
-                  <div className="col-span-6 sm:col-span-3 ">
-                    <label
-                      htmlFor="FirstName"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      First Name
-                    </label>
+                <div className="col-span-6 ">
+                  <label
+                    htmlFor="Role"
+                    className="block text-sm font-medium text-gray-600"
+                  >
+                    Role
+                  </label>
 
-                    <input
-                      type="text"
-                      id="FirstName"
-                      name="first_name"
-                      value={firstName}
-                      onChange={(e) => setFirstName(e.target.value)}
-                      className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm h-6"
-                    />
-                  </div>
-
-                  <div className="col-span-6 sm:col-span-3">
-                    <label
-                      htmlFor="LastName"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Last Name
-                    </label>
-
-                    <input
-                      type="text"
-                      id="LastName"
-                      name="last_name"
-                      value={lastName}
-                      onChange={(e) => setlastName(e.target.value)}
-                      className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm h-6"
-                    />
-                  </div>
-
-                  <div className="col-span-6 sm:col-span-3">
-                    <label
-                      htmlFor="Email"
-                      className="block text-sm font-medium text-gray-900"
-                    >
-                      
-                      Email
-                    </label>
-
-                    <input
-                      type="email"
-                      id="Email"
-                      name="email"
-                      value={email}
-                      onChange={(e) => setemail(e.target.value)}
-                      className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm h-6"
-                    />
-                  </div>
-                  <div className="relative col-span-3">
-                    <div className="inline-flex items-center overflow-hidden rounded-md border bg-white">
-                      <div className="border-e px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-700">
-                        {role}
-                      </div>
-                      <button
-                        className="h-full p-2 text-gray-600 hover:bg-gray-50 hover:text-gray-700 "
-                        onClick={handleClick}
-                      >
-                        <span className="sr-only">Menu</span>
-
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-4 w-4"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </button>
+          
+                {/* <div className=""> */}
+                  <div className="inline-flex items-center overflow-hidden rounded-md border bg-white hover:cursor-pointer w-full "onClick={handleClick}>                      
+                    <div className="border-e px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-700 w-4/5">
+                      {role}
                     </div>
-                    {menuOpen && (
-                      <div
-                        className="absolute end-0 z-10 mt-2 w-56 divide-y divide-gray-100 rounded-md border border-gray-100 bg-white shadow-lg"
-                        role="menu"
-                      >
-                        <div className="p-2">
-                          <div
-                            className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-                            role="menuitem"
-                            onClick={() => setrole("teacher")}
-                          >
-                            Teacher
-                          </div>
-
-                          <div
-                            onClick={() => setrole("Student")}
-                            className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-                            role="menuitem"
-                          >
-                            Student
-                          </div>
-
-                          <div
-                            onClick={() => setrole("Admin")}
-                            className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-                            role="menuitem"
-                          >
-                            Admin
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="col-span-6 sm:col-span-3">
-                    <label
-                      htmlFor="Password"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      
-                      Password
-                    </label>
-                    <input
-                      type="password"
-                      id="Password"
-                      name="password"
-                      value={password}
-                      onChange={(e) => setpassword(e.target.value)}
-                      className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm h-6"
-                    />
-                  </div>
-
-                  <div className="col-span-6 sm:col-span-3">
-                    <label
-                      htmlFor="PasswordConfirmation"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Password Confirmation
-                    </label>
-
-                    <input
-                      type="password"
-                      id="PasswordConfirmation"
-                      name="password_confirmation"
-                      value={passwordConfirm}
-                      onChange={(e) => setpasswordConfirm(e.target.value)}
-                      className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm h-6"
-                    />
-                  </div>
-
-                  <div className="col-span-6">
-                    <label htmlFor="MarketingAccept" className="flex gap-4">
-                      <input
-                        type="checkbox"
-                        id="MarketingAccept"
-                        name="marketing_accept"
-                        className="size-5 rounded-md border-gray-200 bg-white shadow-sm h-6"
-                      />
-
-                      <span className="text-sm text-gray-700">
-                        I want to receive emails about events and product
-                        updates
-                      </span>
-                    </label>
-                  </div>
-
-                  <div className="col-span-6">
-                    <p className="text-sm text-gray-500">
-                      By creating an account, you agree to our
-                      <a className="text-gray-700 "> terms and conditions </a>
-                      and
-                      <a className="text-gray-700 ">privacy policy</a>.
-                    </p>
-                  </div>
-
-                  {/* <div className="col-span-6 mx-44 sm:flex sm:items-center sm:gap-4">
                     <button
-                      type="submit"
-                      className="py-2.5 rounded-md px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white  hover:bg-gray-100 hover:text-blue-700 focus:z-10   dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400  dark:hover:text-white dark:hover:bg-gray-700 w-full"
-                    >
-                      {!loading ? "Create an account" : "Creating account"}
+                      className="h-full p-2 text-gray-600 hover:bg-gray-50 hover:text-gray-700 "
+                      
+                      >
+                      <span className="sr-only">Menu</span>
+
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
                     </button>
                   </div>
-                  <div className="col-span-6 w-full flex items-center">
-                    <div className="mt-4 text-sm text-gray-500 sm:mt-0 w-full text-center">
-                      Already have an account?
-                      <Link to="/login" className="text-gray-700 underline">
-                        Log in
-                      </Link>
-                      .
-                    </div>
-                  </div> */}
-                  <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
-                  <button
-  className="inline-block shrink-0 rounded-md border border-black bg-black px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-black focus:outline-none focus:ring active:text-gray-500"
->
-{!loading ? "Create an account" : "Creating account"}
-            </button>
+                  {menuOpen && (
+                    <div
+                      className="absolute end-0 z-10 mt-2 divide-y divide-gray-100 rounded-md border border-gray-100 bg-white shadow-lg w-2/5"
+                      role="menu"
+                    >
+                      <div className="p-2">
+                        <div
+                          className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700 hover:cursor-pointer"
+                          role="menuitem"
+                          onClick={() => setrole("Teacher")}
+                        >
+                          Teacher
+                        </div>
 
-            <p className="mt-4 text-sm text-gray-500 sm:mt-0">
-              Already have an account?
-              <Link to="/login" className="text-gray-700 underline">
-                        Log in
-                      </Link>
-            </p>
-          </div>
-                </form>
-              </div>
+                        <div
+                          onClick={() => setrole("Student")}
+                          className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700
+                          hover:cursor-pointer"
+                          role="menuitem"
+                        >
+                          Student
+                        </div>
+
+                        <div
+                          onClick={() => setrole("Admin")}
+                          className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700
+                          hover:cursor-pointer"
+                          role="menuitem"
+                        >
+                          Admin
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  </div>
+
+                <div className="col-span-6 ">
+                  <label
+                    htmlFor="Password"
+                    className="block text-sm font-medium text-gray-600"
+                  >
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    id="Password"
+                    name="password"
+                    value={password}
+                    onChange={(e) => setpassword(e.target.value)}
+                    placeholder="••••••••"
+                    required
+                    className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm h-9"
+                  />
+                </div>
+
+                <div className="col-span-6 ">
+                  <label
+                    htmlFor="PasswordConfirmation"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Password Confirmation
+                  </label>
+
+                  <input
+                    type="password"
+                    id="PasswordConfirmation"
+                    name="password_confirmation"
+                    value={passwordConfirm}
+                    onChange={(e) => setpasswordConfirm(e.target.value)}
+                    placeholder="••••••••"
+                    required
+                    className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-600 shadow-sm h-9"
+                  />
+                </div>
+
+                <div className="col-span-6">
+                  <label htmlFor="MarketingAccept" className="flex gap-4">
+                    <input
+                      type="checkbox"
+                      id="MarketingAccept"
+                      name="marketing_accept"
+                      className="size-5 rounded-md border-gray-200 bg-white shadow-sm h-6"
+                    />
+
+                    <span className="text-sm text-gray-700">
+                      I want to receive emails about events and product updates
+                    </span>
+                  </label>
+                </div>
+
+                <div className="col-span-6">
+                  <p className="text-sm text-gray-500 text-center">
+                    By creating an account, you agree to our{" "}
+                    <a className="text-gray-700 underline hover:no-underline hover:cursor-pointer"> terms and conditions </a>
+                    and{" "}
+                    <a className="text-gray-700 underline hover:no-underline hover:cursor-pointer">privacy policy</a>.
+                  </p>
+                </div>
+                <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
+                  <button className="inline-block shrink-0 rounded-md border border-black bg-black px-12 py-3 text-sm font-medium text-white transition  active:text-gray-500 w-full">
+                    {!loading ? "Create an account" : "Creating account"}
+                  </button>
+                 
+                </div>
+                <div className="col-span-6 sm:flex sm:items-center text-center w-full">
+                  <p className="mt-4 text-sm text-gray-500 sm:mt-0 text-center w-full">
+                    Already have an account?
+                    <Link to="/login" className="text-gray-700 underline">
+                      Log in
+                    </Link>
+                  </p>
+                  </div>
+              </form>
             </div>
           </div>
-        </main>
+        </div>
       </div>
+    </div>
   );
 }

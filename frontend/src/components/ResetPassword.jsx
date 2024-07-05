@@ -4,38 +4,48 @@ import { loginUser } from "./redux/users/loginReducer";
 import { Link } from "react-router-dom";
 import ErrorAlert from "./ErrorAlert";
 import SuccessAlert from "./SuccessAlert";
-export default function Login() {
+export default function ResetPassword() {
   const [email, setemail] = useState("");
-  const [password, setpassword] = useState("");
+//   const [password, setpassword] = useState("");
   const [visibleLogin, setvisibleLogin] = useState(0);
   const dispatch = useDispatch();
-  const { loading, error, user } = useSelector((state) => state.login);
+  const { error, user } = useSelector((state) => state.login);
 
   const handleLogin = (e) => {
     e.preventDefault();
-    console.log("Working");
-    dispatch(loginUser({ email, password }));
+    //console.log("Working");
+    dispatch(loginUser({ email }));
   };
   useEffect(() => {
+    // console.log(error)
+    // console.log(error)
     if (user) {
       setvisibleLogin(2);
     } else if (error) setvisibleLogin(1);
+    // console.log(visibleLogin);
     setTimeout(() => {
       setvisibleLogin(0);
     }, 5000);
   }, [error, user]);
   return (
     <>
-
-      <div className=" lg:grid lg:min-h-screen lg:grid-cols-12  pl-20 pt-24 w-full mt-[50px]">
-        <section className="relative flex  bg-white lg:col-span-5  xl:col-span-5  items-center justify-self-center">
+      {visibleLogin === 1 ? (
+        <ErrorAlert error={error} visibleLogin={visibleLogin} />
+      ) : visibleLogin === 2 ? (
+        <SuccessAlert
+          message={"Account created successfully"}
+          visibleLogin={visibleLogin}
+        />
+      ) : null}
+      <div className=" lg:grid lg:min-h-screen lg:grid-cols-12  pl-20 pt-24 w-full">
+        <section className="relative flex  bg-white lg:col-span-5  xl:col-span-5  items-center justify-self-center ">
           <img
             alt=""
             src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             className="absolute inset-0 h-full w-full object-cover opacity-80"
           />
 
-          <div className="hidden lg:relative lg:block lg:p-12">
+          <div className="hidden lg:relative lg:block lg:p-12 ">
             <Link className="block text-white" to="/">
               <span className="sr-only">Home</span>
               {/* <svg
@@ -51,7 +61,7 @@ export default function Login() {
           </svg> */}
             </Link>
 
-            <h2 className="text-2xl font-bold sm:text-3xl md:text-4xl font-sans text-black text-center place-content-center mt-44">
+            <h2 className="mt-44 text-2xl font-bold sm:text-3xl md:text-4xl font-sans text-black text-center place-content-center ">
               Welcome to EduTrack
             </h2>
             <div className="mt-4 max-w-xl leading-relaxed  text-center text-white">
@@ -64,14 +74,6 @@ export default function Login() {
         <main className="flex items-center justify-center lg:col-span-7  xl:col-span-6 bg-white">
           <div className="flex items-center justify-center lg:col-span-7 l xl:col-span-6 absolute top-28  bg-white w-3/12">
             <div className="w-full">
-            {visibleLogin === 1 ? (
-            <ErrorAlert error={error} visibleLogin={visibleLogin} />
-          ) : visibleLogin === 2 ? (
-            <SuccessAlert
-              message={"Account created successfully"}
-              visibleLogin={visibleLogin}
-            />
-          ) : null}
               <Link className="block text-black" to="/">
                 <span className="sr-only">Home</span>
                 <div className="flex justify-center">
@@ -88,12 +90,8 @@ export default function Login() {
                 </svg> */}
                 </div>
               </Link>
-              <div className="text-2xl font-bold flex justify-center text-gray-900 sm:text-3xl md:text-4xl mt-[100px]">
-                Welcome back
-              </div>
-
-              <div className="mt-4 text-xl leading-relaxed flex justify-center text-gray-500">
-                Please login to your account
+              <div className="mt-6 text-2xl font-bold flex justify-center text-gray-900 sm:text-3xl md:text-4xl">
+               Reset password
               </div>
 
               <form
@@ -120,40 +118,12 @@ export default function Login() {
                   />
                 </div>
 
-                <div className="col-span-6 ">
-                  <label
-                    htmlFor="Password"
-                    className="block text-sm font-medium text-gray-700 "
-
-                  >
-                    Password
-                  </label>
-
-                  <input
-                    type="password"
-                    id="Password"
-                    name="password"
-                    value={password}
-                    required
-                    placeholder="••••••••"
-                    onChange={(e) => setpassword(e.target.value)}
-                    className="mt-1 rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm h-8 w-full "
-                  />
-                </div>
-
                 <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
-                  <button className="inline-block shrink-0 rounded-md border border-black bg-black px-12 py-3 text-sm font-medium text-white transition focus:outline-none focus:ring active:text-gray-500 w-full">
-                    {!loading ? "Log in" : "Logging in"}
+                  <button className="inline-block shrink-0 rounded-md border border-black bg-black px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-black focus:outline-none focus:ring active:text-gray-500 w-full">
+                    Reset Password
                   </button>
                 </div>
-                {/* <div className="col-span-6 text-center">
-                  <p className="mt-4 text-sm text-gray-500 sm:mt-0">
-                    Forgot Password?
-                    <Link to="/reset-password" className="text-gray-700 underline">
-                      Reset Password
-                    </Link>
-                  </p>
-                </div> */}
+    
               </form>
             </div>
           </div>

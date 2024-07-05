@@ -3,7 +3,7 @@ export default function SuccessAlert({message, visibleLogin}) {
   return (
     <div
     role="alert"
-    className={`${visibleLogin ? "visible" : "invisible"} rounded-xl border border-gray-100 bg-white p-4 h-1/5 fixed inset-x-0 top-0 mx-auto w-full max-w-md mt-4`}
+    className={`${visibleLogin ? "visible" : "invisible"} mt-[100px] rounded-xl border border-gray-100 bg-white p-4 h-1/5 fixed inset-x-0 top-0 mx-auto w-full max-w-md`}
   >
     <div className="flex items-start gap-4">
       <span className="text-green-600">
@@ -54,6 +54,6 @@ export default function SuccessAlert({message, visibleLogin}) {
 }
 
 SuccessAlert.propTypes = {
-  message: PropTypes.string, // Adjust `PropTypes.any` to the actual type of `error`
-  visibleLogin: PropTypes.number, // Adjust `PropTypes.number` to the actual type of `visibleLogin`
+  message: PropTypes.string, 
+  visibleLogin: PropTypes.number, 
 };

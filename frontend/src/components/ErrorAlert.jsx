@@ -3,7 +3,7 @@ export default function ErrorAlert({error, visibleLogin}) {
   return (
     <div
     role="alert"
-    className={`${visibleLogin ? "visible" : "invisible"} rounded border-s-4 border-red-500 bg-red-5 fixed inset-x-0 top-0 mx-auto w-full max-w-md p-4 bg-white`}
+    className={`${visibleLogin ? "visible" : "invisible"} mt-[100px] rounded border-s-4 border-red-500 bg-red-5 fixed inset-x-0 top-0 mx-auto w-full max-w-md p-4 bg-white`}
   >
     <div className="flex items-center gap-2 text-red-800">
       <svg
