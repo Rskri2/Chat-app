@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema(
     email: {
       type: String,
       unique: true,
-      validate: [validator.isEmail, "Please provide a valid email"],
+      lowercase: true
     },
     password: {
       type: String,
@@ -18,19 +18,25 @@ const userSchema = new mongoose.Schema(
     },
     passwordConfirm: {
       type: String,
-      required: [true, "Please confirm your password"],
       validate: {
         validator: function (el) {
           return el === this.password;
         },
-        message: ["Password dont match"],
+        message: "Password don't match",
       },
     },
     role: {
       type: String,
-      enum: ["Student", "Admin", "Teacher"],
-      default: "Student",
+      enum: ["Employee", "Admin"],
+      default: "Employee",
     },
+    photo: {
+      type: String,
+      default: 'default.jpg'
+    },
+    salary:{
+      type:Number
+    }
   },
   {
     timestamps: true,
@@ -44,8 +50,12 @@ userSchema.methods.correctPassword = async function (
   return await bcrypt.compare(candidatePassword, userPassword);
 };
 userSchema.pre("save", async function (next) {
-  this.password = await bcrypt.hash(this.password, 12);
+  if(this.password){
+    this.password = await bcrypt.hash(this.password, 12);
+    this.passwordConfirm = null;
+  }
 });
+
 
 const User = mongoose.model("User", userSchema);
 

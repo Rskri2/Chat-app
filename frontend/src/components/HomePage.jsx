@@ -1,18 +1,17 @@
-import React from 'react'
-import Header from './ui/Header';
-import Footer from './ui/Footer';
+import Header from './Header';
+import Footer from './Footer';
 import PropTypes from 'prop-types'
-export default function HomePage({children, element}) {
+export default function HomePage({children}) {
   return (
     <>
     <Header/>
       <div>{children}</div>
-    <Footer element={element}/>
+    <Footer />
     </>
   )
 }
 HomePage.propTypes = {
-  children:React.ReactNode,
+  children:PropTypes.node,
   element:PropTypes.string
 }
 

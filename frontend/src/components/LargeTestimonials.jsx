@@ -6,7 +6,7 @@ export default function LargeTestimonial() {
         <div className="py-12 md:py-20">
           <div className="space-y-3 text-center">
             <h2 className="text-3xl font-bold text-black md:text-4xl">
-            Words from the Founder
+            Author&apos;s Desk
             </h2>
             <div className="relative inline-flex">
               <svg
@@ -28,7 +28,7 @@ export default function LargeTestimonial() {
               />
             </div>
             <p className="text-2xl font-bold text-gray-900">
-              “At EduTrack, we believe that every learner deserves access to top-notch educational materials that foster a deep understanding of {" "} practical problem-solving skills. Our goal is to create a supportive and engaging learning environment where everyone can thrive and achieve their full potential..”
+              “At EduTrack, we believe that every organisation deserves a reliable platform to efficiently manage and track employee performance o{" "} . Our mission is to create a transparent and user-friendly environment where both individuals and teams can thrive, ensuring that every employee&apos;s contributions are recognized and optimized..”
             </p>
             <div className="text-sm font-medium text-gray-500">
                 Founder-EduTrack

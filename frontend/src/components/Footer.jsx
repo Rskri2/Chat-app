@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-export default function Footer({element}) {
+export default function Footer() {
   return (
-    <footer className={`mx-auto max-w-6xl px-4 sm:px-6 ${element === 'register' ?"mt-44" : ""}`}>
+    <footer className={`mx-auto max-w-6xl px-4 sm:px-6 mt-12 `}>
       <div
         className="grid gap-10 py-8 sm:grid-cols-12 md:py-12 border-t [border-image:linear-gradient(to_right,transparent,theme(colors.slate.200),transparent)1]"
       >

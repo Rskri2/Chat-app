@@ -14,21 +14,7 @@ export default function FeaturesPlanet() {
             How Portal works
             </h2>
           </div>
-          <div className="grid overflow-hidden sm:grid-cols-2 lg:grid-cols-3 [&>*]:relative [&>*]:p-6 [&>*]:before:absolute [&>*]:before:bg-gray-800 [&>*]:before:[block-size:100vh] [&>*]:before:[inline-size:1px] [&>*]:before:[inset-block-start:0] [&>*]:before:[inset-inline-start:-1px] [&>*]:after:absolute [&>*]:after:bg-gray-800 [&>*]:after:[block-size:1px] [&>*]:after:[inline-size:100vw] [&>*]:after:[inset-block-start:-1px] [&>*]:after:[inset-inline-start:0] md:[&>*]:p-10">
-            <article>
-              <h3 className="mb-2 flex items-center space-x-2 font-medium text-gray-200">
-                <svg
-                  className="fill-blue-500 w-16 h-16"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M2 4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4Zm2-4a4 4 0 0 0-4 4v8a4 4 0 0 0 4 4h8a4 4 0 0 0 4-4V4a4 4 0 0 0-4-4H4Zm1 10a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H5Z" />
-                </svg>
-                <span>Educators</span>
-              </h3>
-              <p className="text-[15px] text-gray-400">
-               Schedule the activity for the students and keeps track of their progress.Connect with fellow educators to share best practises.
-              </p>
-            </article>
+          <div className="grid overflow-hidden sm:grid-cols-2 lg:grid-cols-2 [&>*]:relative [&>*]:p-6 [&>*]:before:absolute [&>*]:before:bg-gray-800 [&>*]:before:[block-size:100vh] [&>*]:before:[inline-size:1px] [&>*]:before:[inset-block-start:0] [&>*]:before:[inset-inline-start:-1px] [&>*]:after:absolute [&>*]:after:bg-gray-800 [&>*]:after:[block-size:1px] [&>*]:after:[inline-size:100vw] [&>*]:after:[inset-block-start:-1px] [&>*]:after:[inset-inline-start:0] md:[&>*]:p-10">
             <article>
               <h3 className="mb-2 flex items-center space-x-2 font-medium text-gray-200">
                 <svg
@@ -38,7 +24,7 @@ export default function FeaturesPlanet() {
                 >
                   <path d="M14.29 2.614a1 1 0 0 0-1.58-1.228L6.407 9.492l-3.199-3.2a1 1 0 1 0-1.414 1.415l4 4a1 1 0 0 0 1.496-.093l7-9ZM1 14a1 1 0 1 0 0 2h14a1 1 0 1 0 0-2H1Z" />
                 </svg>
-                <span>Students</span>
+                <span>Employees</span>
               </h3>
               <p className="text-[15px] text-gray-400">
                Track the activity for the day. Connect with the teachers and dive deeper into wide range of topics.Follow personalised path according to need. 
@@ -59,7 +45,7 @@ export default function FeaturesPlanet() {
                 <span>Admin</span>
               </h3>
               <p className="text-[15px] text-gray-400">
-              Monitor student progress and engagement through comprehensive analytics and reporting tools. Manages multiple classes and teachers efficiently .
+              Monitor employees progress and engagement through comprehensive analytics and reporting tools. Manages multiple employees efficiently .
               </p>
             </article>
           </div>

@@ -1,44 +1,64 @@
-import { useState, useEffect } from "react";
+import { useState,useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { registerUser } from "./redux/users/registerReducer";
-import { Link } from "react-router-dom";
-import SuccessAlert from "./SuccessAlert";
-import ErrorAlert from "./ErrorAlert";
+import {  message } from "antd";
+import { registerUser } from "../redux/authReducer";
+import { Link ,useNavigate} from "react-router-dom";
+import { Spinner } from "@material-tailwind/react";
 export default function Register() {
   const [name, setname] = useState("");
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
   const [passwordConfirm, setpasswordConfirm] = useState("");
-  const [role, setrole] = useState("Student");
+  const [role, setrole] = useState("Admin");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [error, setError] = useState(null)
   const [visibleLogin, setvisibleLogin] = useState(0);
-  const { loading, error, user } = useSelector((state) => state.register);
+  const { loadingReg } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const handleLogin = (e) => {
+  const success = () => {
+    message.success('This is a success message');
+  };
+const navigate = useNavigate();
+  const err = () => {
+    message.error('This is an error message');
+  };
+  const handleLogin = async (e) => {
+
     e.preventDefault();
-    dispatch(
-      registerUser({ name, email, password, passwordConfirm })
-    );
+    const res = await dispatch( registerUser({ name, email, password, passwordConfirm }));
+    console.log(res)
+    if(res.success){
+      setvisibleLogin(1);
+  }
+    else{
+      setError(res.error);
+      setvisibleLogin(2);
+    }
+      setTimeout(() => {
+        setvisibleLogin(0);
+      }, 5000);
+    
   };
   const handleClick = () => {
     if (menuOpen) setMenuOpen(false);
     else setMenuOpen(true);
   };
   useEffect(() => {
-    if (user) {
-      setvisibleLogin(2);
-    } else if (error) setvisibleLogin(1);
-    setTimeout(() => {
-      setvisibleLogin(0);
-    }, 5000);
-  }, [error, user]);
+    
+    if (visibleLogin === 2) {
+      message.error(error);
+    }
+    else if(visibleLogin === 1){
+      navigate("/dashboard")
+    }
+  }, [visibleLogin]); 
   return (
-    <div className="lg:grid min-h-screen lg:min-h-screen lg:grid-cols-12  pl-20 pt-20 mt-[100px]">
-      <section className="relative flex  items-center justify-center bg-yellow-50 lg:col-span-5  xl:col-span-5 h ">
+    <div className="lg:grid min-h-screen lg:min-h-screen lg:grid-cols-12  pl-20 pt-20 relative">
+      <section className="relative flex  items-center justify-center bg-yellow-50 lg:col-span-5  xl:col-span-5 min-h-screen">
         <img
           alt=""
           src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          className="absolute inset-0 min-h-screen w-full object-cover opacity-80"
+          className="absolute inset-0 h-full w-full object-cover opacity-80"
         />
 
         <div className="hidden lg:relative lg:block lg:p-12">
@@ -70,15 +90,6 @@ export default function Register() {
       </section>
 
       <div className="flex items-center justify-center lg:col-span-7 xl:col-span-6 bg-white w-full">
-        <div className="flex flex-col items-center w-full ">
-          {visibleLogin === 1 ? (
-            <ErrorAlert error={error} visibleLogin={visibleLogin} />
-          ) : visibleLogin === 2 ? (
-            <SuccessAlert
-              message={"Account created successfully"}
-              visibleLogin={visibleLogin}
-            />
-          ) : null}
           <div className="flex items-center justify-center  py-2 sm:px-12 lg:col-span-7  lg:py-6 xl:col-span-6 absolute top-20  w-4/12 ">
             <div className="max-w-md lg:max-w-3xl flex items-center flex-col ">
               <Link className="block text-blue-600" to="/">
@@ -96,7 +107,7 @@ export default function Register() {
                    </svg> */}
               </Link>
 
-              <div className="mt-[100px] text-sm font-bold flex justify-center text-gray-900 sm:text-2xl md:text-4xl">
+              <div className="text-sm font-bold flex justify-center text-gray-900 sm:text-2xl md:text-4xl">
                 Welcome to EduTrack
               </div>
 
@@ -158,13 +169,12 @@ export default function Register() {
                   </label>
 
           
-                {/* <div className=""> */}
                   <div className="inline-flex items-center overflow-hidden rounded-md border bg-white hover:cursor-pointer w-full "onClick={handleClick}>                      
                     <div className="border-e px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-700 w-4/5">
                       {role}
                     </div>
                     <button
-                      className="h-full p-2 text-gray-600 hover:bg-gray-50 hover:text-gray-700 "
+                      className="h-full p-2 text-gray-600 hover:bg-gray-50 hover:text-gray-700 w-1/5"
                       
                       >
                       <span className="sr-only">Menu</span>
@@ -183,40 +193,7 @@ export default function Register() {
                       </svg>
                     </button>
                   </div>
-                  {menuOpen && (
-                    <div
-                      className="absolute end-0 z-10 mt-2 divide-y divide-gray-100 rounded-md border border-gray-100 bg-white shadow-lg w-2/5"
-                      role="menu"
-                    >
-                      <div className="p-2">
-                        <div
-                          className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700 hover:cursor-pointer"
-                          role="menuitem"
-                          onClick={() => setrole("Teacher")}
-                        >
-                          Teacher
-                        </div>
-
-                        <div
-                          onClick={() => setrole("Student")}
-                          className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700
-                          hover:cursor-pointer"
-                          role="menuitem"
-                        >
-                          Student
-                        </div>
-
-                        <div
-                          onClick={() => setrole("Admin")}
-                          className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700
-                          hover:cursor-pointer"
-                          role="menuitem"
-                        >
-                          Admin
-                        </div>
-                      </div>
-                    </div>
-                  )}
+                     
                   </div>
 
                 <div className="col-span-6 ">
@@ -282,10 +259,10 @@ export default function Register() {
                   </p>
                 </div>
                 <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
-                  <button className="inline-block shrink-0 rounded-md border border-black bg-black px-12 py-3 text-sm font-medium text-white transition  active:text-gray-500 w-full">
-                    {!loading ? "Create an account" : "Creating account"}
+                  <button type="submit" className="inline-block shrink-0 rounded-md border border-black bg-black px-12 py-3 text-sm font-medium text-white transition focus:outline-none focus:ring active:text-gray-500 w-full">
+                   { !loadingReg && ('Create an account')}
+                   {loadingReg && ( <Spinner className="h-5 w-full text-white justify-center" />)}
                   </button>
-                 
                 </div>
                 <div className="col-span-6 sm:flex sm:items-center text-center w-full">
                   <p className="mt-4 text-sm text-gray-500 sm:mt-0 text-center w-full">
@@ -300,6 +277,6 @@ export default function Register() {
           </div>
         </div>
       </div>
-    </div>
+
   );
 }
