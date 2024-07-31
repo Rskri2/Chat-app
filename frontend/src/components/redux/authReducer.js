@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const BASEURL = `http://127.0.0.1:5000/api/v1`;
+const BASEURL = `https://edu-track-nu.vercel.app/api/v1`;
 
 const authSlice = createSlice({
   name: "auth",
