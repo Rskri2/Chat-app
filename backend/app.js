@@ -9,7 +9,7 @@ const errorControllers = require(`${__dirname}/controller/errorCtrl`);
 const app = express();
 
 app.use(cors({
-  origin:"http://localhost:5173",
+  origin:"https://edu-track-94ba.vercel.app",
   credentials:true
 }))
 app.use(express.json());
