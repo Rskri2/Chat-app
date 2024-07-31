@@ -7,7 +7,7 @@ import AccountPage from "./components/AccountPage";
 import AccountInfo from "./components/auth/AccountInfo";
 import AddStudents from "./components/auth/AddStudents";
 import ProtectedRoute from "./ProtectedRoute";
-import {Result }from '@node_modules/antd'
+import {Result }from 'antd'
 function App() {
 
   return (
