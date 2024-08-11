@@ -1,65 +1,72 @@
-# Employee Tracking Website
+# Chat App
 
 ## Overview
 
-This project provides a comprehensive solution for tracking employees, their transactions, and scheduling events. The system allows administrators to register new employees, view transactions, and schedule events, while employees can view their pending events.
+Chat App is a real-time messaging application built with Node.js, Socket.io, React, and MongoDB. It allows users to communicate instantly through one-on-one and group chats, featuring real-time message updates, user presence indicators, and more.
 
-## Prerequisites
+## Features
 
-- Node.js (for backend)
-- npm(for package management)
-- React (for frontend)
-- MongoDB database
+- Real-time messaging with Socket.io
+- User authentication and management
+- One-on-one and group chat functionality
+- User presence indicators
+- Message notifications
+- Persistent message history
+- Responsive design
 
-## Installation
+## Technologies Used
 
-### Frontend
+- **Frontend:** React
+- **Backend:** Node.js, Express
+- **Real-Time Communication:** Socket.io
+- **Database:** MongoDB
+- **Authentication:** Custom authentication (or integrate with an auth provider if needed)
 
-1. **Navigate to the `frontend` directory:**
+## Setup
+
+### Prerequisites
+
+- Node.js and npm (or yarn)
+- MongoDB (local or MongoDB Atlas)
+
+### Installation
+
+1. **Clone the Repository:**
    ```bash
-   cd frontend
-   npm install
-    npm run dev
-   ```
-### Backend
-
-1. **Navigate to the `backend` directory:**
+   cd chat-app
+2. **Install Backend Dependencies:**
    ```bash
-   cd backend
-   npm install
-    npm start
-   ```
-2. **Create a .env file in the `backend` directory with the following variables:**
-
-  ```bash
-      PORT=5000
-      NODE_ENV=development
-      DATABASE=<your-database-url>
-      DATABASE_PASSWORD=<your-database-password>
-      JWT_SECRET=<your-jwt-secret>
-      JWT_COOKIE_EXPIRES_IN=<cookie-expiry-time>
+  cd backend
+  npm install
   ```
-3. **Start the node.js server
-
+3. **Install Frontend Dependencies:**
    ```bash
-     nodemon server.js
-   ```
-## User Roles and Permissions
+  cd ../frontend
+  npm install
+  ```
+4. **Configure Environment Variables:**
+  Create a .env file in the backend directory with the following content:
+  ```bash
+  MONGO_URI=your_mongodb_connection_string
+  PORT=5000
+  ```
+5. **Start the Backend Server:**
+   ```bash
+  cd backend
+  npm start
+  ```
+6. **Start the Frontend Development Server:**
+   ```bash
+  cd ../frontend
+  npm start
+  ```
+7. **Start the Frontend Development Server:**
+  Navigate to http://localhost:5173 to view the app.
 
-### Admin
 
-- **Register New Employees**
-  - Use the registration form to add new employees.
-
-- **View Transactions**
-  - Access a dashboard to view and manage financial transactions.
-
-- **Schedule Events**
-  - Create and manage events, including setting dates, times, and descriptions.
-
-### Employee
-
-- **View Pending Events**
-  - Access a personal dashboard to view events that are scheduled for them.
-
+### Usage
+  ### Sign Up / Login: Users can register or log in using their credentials.
+  ### Start a Chat: Users can initiate one-on-one or group chats.
+  ### Send Messages: Messages are delivered in real-time.
+ ### View History: Users can view past messages.
 

@@ -5,15 +5,8 @@ const userController = require("../controller/userCtrl");
 router.route("/login").post(userController.loginUser);
 router.route("/register").post(userController.registerUser);
 router.use(userController.protect);
-router.route("/logout").get(userController.logout);
+router.get("/me", userController.myAccount)
 router.post("/updateMe", userController.updateMe);
-
-router.use(userController.restrictTo("Admin"));
-router
-  .route("/")
-  .post(userController.registerUser)
-router.route("/")
-  .get(userController.fetchUser);
 
 router
   .route("/:id")

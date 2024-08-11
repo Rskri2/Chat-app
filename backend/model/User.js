@@ -25,18 +25,10 @@ const userSchema = new mongoose.Schema(
         message: "Password don't match",
       },
     },
-    role: {
-      type: String,
-      enum: ["Employee", "Admin"],
-      default: "Employee",
-    },
     photo: {
       type: String,
-      default: 'default.jpg'
+      default: ""
     },
-    salary:{
-      type:Number
-    }
   },
   {
     timestamps: true,

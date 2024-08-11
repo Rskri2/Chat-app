@@ -2,6 +2,7 @@ import {
   Card,
 } from "@material-tailwind/react";
 import {SaveOutlined} from '@ant-design/icons';
+import { message } from "antd";
 import { Button } from 'antd';
 import { useState,useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -10,10 +11,18 @@ export default function AccountInfo() {
   const dispatch = useDispatch();
   const [name, setname] = useState("");
   const [email, setemail] = useState("");
-  
+  message.config({
+    duration: 2,
+  });
   const handleUpdate = async (e) => {
     e.preventDefault();
-    await dispatch(updateUser({ name, email}));
+    const res = await dispatch(updateUser({ name, email}));
+    if(res.success){
+      message.success("Edited details successfully")
+    }
+    else{
+      message.error(res.error)
+    }
   };
   useEffect(() => {
     const name = window.localStorage.getItem("name");

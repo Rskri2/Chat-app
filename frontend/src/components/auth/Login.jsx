@@ -10,39 +10,27 @@ export default function Login() {
   const [password, setpassword] = useState("");
   const [visibleLogin, setvisibleLogin] = useState(0);
   const [isLoggedIn, setIsLogedIn] = useState(false);
-  const [error, setError] = useState(null);
   const dispatch = useDispatch();
   const { loadingLogin } = useSelector((state) => state.auth);
   const navigate = useNavigate();
-
-  const err = () => {
-    message.error('err');
-  };
-
+  message.config({
+    duration: 2,
+  });
   const handleLogin = async (e) => {
     e.preventDefault();
     const res = await dispatch(loginUser({ email, password }));
     if(res.success)setvisibleLogin(1);
     
     else{
-      setvisibleLogin(2);
-       setError(res.error)
+      message.error(res.error)
       }
-      setTimeout(() => {
-        setvisibleLogin(0);
-      }, 5000);
-
   };
   useEffect(() => {
-    const log = window.localStorage.getItem("token");
-    if(log)setIsLogedIn(true);
+    if(window.localStorage.getItem("token"))setIsLogedIn(true);
     if(visibleLogin === 1){
     navigate("/account-info");
    }
-    else if (visibleLogin === 2) {
-      message.error(error); 
-    }
-  }, [ visibleLogin]); // D
+  }, [visibleLogin]); // D
   return (
     <>
   {
@@ -55,7 +43,7 @@ export default function Login() {
     ) : (
 
       <div className=" lg:grid lg:min-h-screen lg:grid-cols-12  pl-20 pt-24 w-full">
-        <section className="relative flex bg-white lg:col-span-5  xl:col-span-5  items-center justify-self-center">
+        <section className="relative flex bg-white lg:col-span-5  xl:col-span-5 items-center justify-self-center min-h-screen">
 
           <img
             alt=""
@@ -78,8 +66,8 @@ export default function Login() {
             </div>
           </div>
         </section>
-        <main className=" flex items-center justify-center lg:col-span-7  xl:col-span-6 bg-white">
-          <div className=" flex items-center justify-center lg:col-span-7 l xl:col-span-6 absolute top-28  bg-white w-3/12">
+        <main className=" flex items-center justify-center lg:col-span-7  xl:col-span-6 ">
+          <div className=" flex items-center justify-center lg:col-span-7 l xl:col-span-6 absolute top-28  w-3/12">
             <div className="w-full">
           
               <Link className="block text-black" to="/">
@@ -145,19 +133,6 @@ export default function Login() {
                    
                    { !loadingLogin && ('Log in')}
                    {loadingLogin && ( <Spinner className="h-5 w-full text-white justify-center" />)}
-                  </button>
-                </div>
-                <div className="col-span-6 text-center">
-                  <p className="mt-4 text-sm text-gray-500 sm:mt-0">
-                  Forgot Password?
-                  <Link to="/forgot-password" className="text-gray-700 underline">
-                  Reset Password
-                  </Link>
-                  </p>
-                  </div>
-             <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
-                  <button className="inline-block w-full">
-                  OR
                   </button>
                 </div>
               </form>

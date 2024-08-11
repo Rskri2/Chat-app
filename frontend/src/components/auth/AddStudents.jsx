@@ -1,18 +1,23 @@
-import  {  useEffect, useState } from 'react';
-import { Button, Form, Input, Popconfirm, Table,Modal, InputNumber  } from 'antd';
+import { useEffect, useState } from "react";
 import {
-  DeleteOutlined
-  
-} from '@ant-design/icons';
-import { message } from 'antd';
+  Button,
+  Form,
+  Input,
+  Popconfirm,
+  Table,
+  Modal,
+  InputNumber,
+  message
+} from "antd";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
-import { addUser, fetchUser, deleteUser} from "../redux/authReducer";
-export default function AddStudents  ()  {
-  
+import { addUser, fetchUser, deleteUser, editUser } from "../redux/authReducer";
+export default function AddStudents() {
   const [dataSource, setDataSource] = useState([]);
-  const [visibleLogin, setvisibleLogin] = useState(0);
+  const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
   const showModal = () => {
     setOpen(true);
   };
@@ -22,39 +27,62 @@ export default function AddStudents  ()  {
   const handleCancel = () => {
     setOpen(false);
   };
-  const handleDelete = async(key) => {
-    await dispatch( deleteUser(key._id));
+  message.config({
+    duration: 2,
+  });
+  const handleCancelEdit = () => {
+    setOpenEdit(false);
   };
+  const showModalEdit = (record) => {
+    setContent(record);
+    setOpenEdit(true);
+  };
+  const handleDelete = async (key) => {
+    await dispatch(deleteUser(key._id));
+    const data = await dispatch(fetchUser());
+    if (data.success) {
+      setDataSource(data.users);
+      message.success("Data deleted successfully")
+    }
+    
+  };
+
   const defaultColumns = [
     {
-      title: 'Name',
-      dataIndex: 'name',
-      width: '30%',
-      key:'name',
-      editable: true,
+      title: "Name",
+      dataIndex: "name",
+      width: "30%",
+      key: "name",
     },
     {
-      title: 'Email',
-      dataIndex: 'email',
-      key:'email',
-      editable: true,
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
     },
     {
-      title: 'Salary',
-      key:'Salary',
-      dataIndex: 'salary',
-      editable: true,
+      title: "Salary",
+      key: "Salary",
+      dataIndex: "salary",
     },
     {
-      title: 'operation',
-      dataIndex: 'operation',
-      
-      render: (_, record) =>
-        dataSource.length >= 1 ? (
-          <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record)}>
-           <DeleteOutlined />
-          </Popconfirm>
-        ) : null,
+      title: "Delete",
+      dataIndex: "Delete",
+
+      render: (_, record) => (
+        <Popconfirm
+          title="Sure to delete?"
+          onConfirm={() => handleDelete(record)}
+        >
+          <DeleteOutlined />
+        </Popconfirm>
+      ),
+    },
+    {
+      title: "Edit",
+      dataIndex: "Edit",
+      render: (_, record) => (
+        <EditOutlined onClick={() => showModalEdit(record)} />
+      ),
     },
   ];
   const layout = {
@@ -65,131 +93,214 @@ export default function AddStudents  ()  {
       span: 16,
     },
   };
-  const [error,setError] = useState(null);
-  const [form] = Form.useForm();
-  const err = () => {
-    message.error('This is an error message');
-  };
 
   const dispatch = useDispatch();
-  
+  const [form] = Form.useForm();
+
   const handleSubmit = async (e) => {
     let values;
     e.preventDefault();
     try {
       values = await form.validateFields();
     } catch (errorInfo) {
+      setOpen(false);
+      message.error(errorInfo);
       return;
     }
-    const res = await dispatch( addUser(values));
-    if(res.success)setvisibleLogin(1);
-    else{
-      setvisibleLogin(2);
-       setError(res.error)
-      }
-      
+    await dispatch(addUser(values));
+    const data = await dispatch(fetchUser());
+    if (data.success) {
+      setDataSource(data.users);
+      message.success("Data added successfuly")
+    }
+    else message.error(data.error);
+    setOpen(false);
+  };
+  
+  const handleSubmitEdit = async (e) => {
+    e.preventDefault();
+    let values;
+    try {
+      values = await form.validateFields();
+    } catch (errorInfo) {
+      setOpenEdit(false);
+      message.error(errorInfo);
+      return;
+    }
+    const id = content ? content._id : 0;
+   const res = await dispatch(editUser({ id, values }));
+   if(res.error){
+    message.error(res.error)
+   }
+   else {
+    message.success("Data edited successfully");
+   }
+    setOpenEdit(false);
   };
 
-  useEffect(()=>{
-    const fetch = async()=>{
+  useEffect(() => {
+    const fetch = async () => {
       const res = await dispatch(fetchUser());
-      if(res.success){
-       setDataSource(res.users);
-      }
-      else{
+      if (res.success) {
+        setDataSource(res.users);
+      } else {
         message.error(res.error);
       }
-    }
+    };
     fetch();
-  },[])
+  }, []);
+
+  const CustomizedForm = ({ onChange, fields }) => (
+    <Form
+      name="global_state"
+      {...layout}
+      fields={fields}
+      onFieldsChange={(_, allFields) => {
+        onChange(allFields);
+      }}
+      form={form}
+      style={{
+        maxWidth: 600,
+      }}
+    >
+      <Form.Item label="Name" name="name">
+        <Input />
+      </Form.Item>
+      <Form.Item label="Email" name="email">
+        <Input />
+      </Form.Item>
+      <Form.Item label="Salary" name="salary">
+        <InputNumber />
+      </Form.Item>
+      <Form.Item
+        wrapperCol={{
+          ...layout.wrapperCol,
+          offset: 8,
+        }}
+      >
+        <Button type="primary" onClick={handleSubmitEdit}>
+          Close
+        </Button>
+      </Form.Item>
+    </Form>
+  );
+  const [fields, setFields] = useState([
+    {
+      name: ["name"],
+      value: "",
+    },
+    {
+      email: ["email"],
+      value: "",
+    },
+    {
+      salary: ["salary"],
+      value: 0,
+    },
+  ]);
+  useEffect(() => {
+    setFields([
+      { name: ["name"], value: content ? content.name : "" },
+      { name: ["email"], value: content ? content.email : "" },
+      { name: ["salary"], value: content ? content.salary : 0 },
+    ]);
+  }, [content]);
   return (
-    <div className='flex items-center flex-col' >
-      <Button type="primary" onClick={showModal} className='mb-10 mt-10'>
-      Add Student
+    <div className="flex items-center flex-col">
+      <Button type="primary" onClick={showModal} className="mb-10 mt-10">
+        Add Employee
       </Button>
       <Modal
         className="right-0"
         open={open}
-        title="Add Student"
+        title="Add Employee"
+        onCancel={handleCancel}
         onOk={handleOk}
-        onCancel={handleCancel}  
-        footer={[
-          <Button key="back" onClick={handleCancel}>
-            Close
-          </Button>,
-        ]}
+        footer={[]}
       >
-  <Form
-    {...layout}
-    form={form}
-    name="nest-messages"
-    style={{
-      maxWidth: 600,
-    }}
-  >
-    <Form.Item
-      label="Name"
-      name="name"
-      required
-      tooltip="This is a required field"
-      rules={[
-        {
-          required: true,
-          message: "Name is a required field!",
-        },
-      ]}
-    >
-      <Input/>
-    </Form.Item>
-    <Form.Item
-    label="Email"
-    name="email"
-    required
-    tooltip="This is a required field"
-    rules={[
-      {
-        required: true,
-        message: "email is a required field!",
-      },
-    ]}
-    >
-      <Input  />
-    </Form.Item>
-    <Form.Item
-    label="Salary"
-    name="salary"
-      required
-      tooltip="This is a required field"
-      rules={[
-        {
-          required: true,
-          message: "Salary is a required field!",
-        },
-      ]}
-    >
-      <InputNumber/>
-    </Form.Item>
-    <Form.Item
-      wrapperCol={{
-        ...layout.wrapperCol,
-        offset: 8,
-      }}
-    >
-      <Button type="primary" onClick={handleSubmit} >
-        Submit
-      </Button>
-    </Form.Item>
-  </Form>
-
+        <Form
+          {...layout}
+          form={form}
+          name="nest-messages"
+          style={{
+            maxWidth: 600,
+          }}
+        >
+          <Form.Item
+            label="Name"
+            name="name"
+            required
+            tooltip="This is a required field"
+            rules={[
+              {
+                required: true,
+                message: "Name is a required field!",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Email"
+            name="email"
+            required
+            tooltip="This is a required field"
+            rules={[
+              {
+                required: true,
+                message: "email is a required field!",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Salary"
+            name="salary"
+            required
+            tooltip="This is a required field"
+            rules={[
+              {
+                required: true,
+                message: "Salary is a required field!",
+              },
+            ]}
+          >
+            <InputNumber />
+          </Form.Item>
+          <Form.Item
+            wrapperCol={{
+              ...layout.wrapperCol,
+              offset: 8,
+            }}
+          >
+            <Button type="primary" onClick={handleSubmit}>
+              Close
+            </Button>
+          </Form.Item>
+        </Form>
       </Modal>
-
+      <Modal
+        className="right-0"
+        open={openEdit}
+        title="Edit Employee"
+        onCancel={handleCancelEdit}
+        footer={[]}
+      >
+        <CustomizedForm
+          fields={fields}
+          onChange={(newFields) => {
+            setFields(newFields);
+          }}
+        />
+      </Modal>
       <Table
-        rowClassName={() => 'editable-row'}
+        rowClassName={() => "editable-row"}
         bordered
-        className='w-2/3'
+        className="w-2/3"
         dataSource={dataSource}
         columns={defaultColumns}
       />
     </div>
   );
-};
+}
