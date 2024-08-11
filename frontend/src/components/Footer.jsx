@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 export default function Footer() {
   return (
-    <footer className={`mx-auto max-w-6xl px-4 sm:px-6 mt-12 `}>
+    <footer className={`mx-auto max-w-6xl px-4 sm:px-6 mt-100`}>
       <div
         className="grid gap-10 py-8 sm:grid-cols-12 md:py-12 border-t [border-image:linear-gradient(to_right,transparent,theme(colors.slate.200),transparent)1]"
       >
@@ -10,7 +10,7 @@ export default function Footer() {
           <div>
           </div>
           <div className="text-sm text-gray-600">
-            &copy; EduTrack.com - All rights reserved.
+            &copy;  Chatapp.com - All rights reserved.
           </div>
         </div>
 
@@ -104,7 +104,7 @@ export default function Footer() {
             </li>
           </ul>
         </div>
-        <div className="space-y-2 sm:col-span-6 md:col-span-3 lg:col-span-2">
+        {/* <div className="space-y-2 sm:col-span-6 md:col-span-3 lg:col-span-2">
           <h3 className="text-sm font-medium">Social</h3>
           <ul className="flex gap-1">
             <li>
@@ -138,7 +138,7 @@ export default function Footer() {
               </Link>
             </li>
           </ul>
-        </div>
+        </div> */}
       </div>
     </footer>
   )

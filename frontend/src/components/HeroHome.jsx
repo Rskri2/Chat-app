@@ -16,7 +16,7 @@ export default function HeroHome() {
               data-aos="zoom-y-out"
               data-aos-delay={150}
             >
-              Tracking portal for the employees <br className="max-lg:hidden" />
+             Chat app<br className="max-lg:hidden" />
               
             </h1>
             <div className="mx-auto max-w-3xl">
@@ -25,17 +25,16 @@ export default function HeroHome() {
                 data-aos="zoom-y-out"
                 data-aos-delay={300}
               >
-                Sign up today to take control of your employees, enhance
-                your company methods, or manage your organization.
+                Sign up today to take control chat with others
               </p>
-              <div className="relative before:absolute before:inset-0 before:border-y before:[border-image:linear-gradient(to_right,transparent,theme(colors.slate.300/.8),transparent)1]">
-                     <button >
-                     <Link to="/register" className="inline-block shrink-0 rounded-md border border-black bg-black px-12 py-3 text-sm font-medium text-white transition focus:outline-none focus:ring active:text-gray-500 w-full"
-                     >
-                    Sign up today
-                  </Link>
-                  </button>
-              </div>
+                      <div className="inline-block shrink-0 rounded-md border border-black bg-black px-12 pb-3 text-sm font-medium text-white transition focus:outline-none focus:ring active:text-gray-500 h-16">
+                  <div className="mt-4 text-sm text-gray-500 sm:mt-0 text-center ">
+                  
+                    <Link to="/register" className="text-gray-700 underline">
+                     Register
+                    </Link>
+                  </div>
+                  </div>
             </div>
           </div>
         </div>

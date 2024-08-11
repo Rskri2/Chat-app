@@ -3,10 +3,8 @@ import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
 import HomePage from "./components/HomePage";
 import Page from "./components/Page";
-import AccountPage from "./components/AccountPage";
-import AccountInfo from "./components/auth/AccountInfo";
-import AddStudents from "./components/auth/AddStudents";
 import ProtectedRoute from "./ProtectedRoute";
+import ChatLayout  from "./components/auth/ChatLayout"
 import {Result }from 'antd'
 function App() {
 
@@ -20,25 +18,16 @@ function App() {
           element={<HomePage>{<Register />}</HomePage>}
         />
         <Route element={<ProtectedRoute />}>
-          <Route
-            path="/account-info"
-            element={
-              <>
-                <AccountPage />
-                <AccountInfo />
-              </>
-            }
-          />
-          <Route
-            path="/employee"
-            element={
-              <>
-                <AccountPage />
-                <AddStudents />
-              </>
-            }
-          />
         </Route>
+          <Route
+            path="/my-account"
+            element={
+              <>
+             
+                <ChatLayout />
+              </>
+            }
+          />
 
         <Route
           path="/*"
