@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 const BASEURL = import.meta.env.VITE_BACKEND_URL;
+
 const authSlice = createSlice({
   name: "auth",
   initialState: {
