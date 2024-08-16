@@ -42,7 +42,7 @@ const navigate = useNavigate();
 
     e.preventDefault();
     const res = await dispatch( registerUser({ name, email, password, passwordConfirm }));
-    console.log(res)
+  
     if(res.success){
       setvisibleLogin(1);
       
@@ -55,7 +55,7 @@ const navigate = useNavigate();
 
   useEffect(() => {
     if(visibleLogin === 1){
-      navigate("/dashboard")
+      navigate("/my-account")
     }
   }, [visibleLogin]); 
   return (

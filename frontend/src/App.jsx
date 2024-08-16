@@ -6,8 +6,8 @@ import Page from "./components/Page";
 import ProtectedRoute from "./ProtectedRoute";
 import ChatLayout  from "./components/auth/ChatLayout"
 import {Result }from 'antd'
-function App() {
 
+function App() {
   return (
     <BrowserRouter>
       <Routes>
@@ -18,16 +18,8 @@ function App() {
           element={<HomePage>{<Register />}</HomePage>}
         />
         <Route element={<ProtectedRoute />}>
+          <Route path="/my-account/:id?" element={<ChatLayout />} />
         </Route>
-          <Route
-            path="/my-account"
-            element={
-              <>
-             
-                <ChatLayout />
-              </>
-            }
-          />
 
         <Route
           path="/*"

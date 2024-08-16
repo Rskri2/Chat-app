@@ -37,7 +37,7 @@ const handleValidationErrorDB = err => {
         message: err.message
       });
     }
-
+    console.log(err);
     return res.status(500).json({
       title: 'Something went wrong!',
       message: 'Please try again later.'

@@ -19,6 +19,7 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     const res = await dispatch(loginUser({ email, password }));
+    
     if(res.success)setvisibleLogin(1);
     
     else{
@@ -28,7 +29,7 @@ export default function Login() {
   useEffect(() => {
     if(window.localStorage.getItem("token"))setIsLogedIn(true);
     if(visibleLogin === 1){
-    navigate("/account");
+    navigate("/my-account");
    }
   }, [visibleLogin]); // D
   return (

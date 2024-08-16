@@ -34,12 +34,14 @@ Chat App is a real-time messaging application built with Node.js, Socket.io, Rea
 1. **Clone the Repository:**
    ```bash
    cd chat-app
+   ```
 2. **Install Backend Dependencies:**
    ```bash
-  cd backend
-  npm install
-  ```
-3. **Install Frontend Dependencies:**
+     cd backend
+     npm install
+     ```
+
+3.**Install Frontend Dependencies:**
    ```bash
   cd ../frontend
   npm install
@@ -52,14 +54,14 @@ Chat App is a real-time messaging application built with Node.js, Socket.io, Rea
   ```
 5. **Start the Backend Server:**
    ```bash
-  cd backend
-  npm start
-  ```
+     cd backend
+     npm start
+      ```
 6. **Start the Frontend Development Server:**
    ```bash
-  cd ../frontend
-  npm start
-  ```
+     cd ../frontend
+     npm start
+     ```
 7. **Start the Frontend Development Server:**
   Navigate to http://localhost:5173 to view the app.
 

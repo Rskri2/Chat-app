@@ -1,10 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-const BASEURL = "http://127.0.0.1:5000/api/v1";
-// const BASEURL = `https://edu-track-nu.vercel.app/api/v1`;
+const BASEURL = import.meta.env.VITE_BACKEND_URL;
 const authSlice = createSlice({
   name: "auth",
   initialState: {
+    user:"",
+    allUsers:[],
+    onlineUsers:[],
     loadingLogin: false,
     loadingReg: false,
     loadingLogout: false,
@@ -12,23 +14,31 @@ const authSlice = createSlice({
   reducers: {
     loginStart(state) {
       state.loadingLogin = true;
-      state.isAuthenticated = true;
+      
+    },
+    loginFailure(state){
+      state.loadingLogin=false;
     },
     registerStart(state) {
       state.loadingReg = true;
     },
     registerSuccess(state) {
-      state.isAuthenticated = true;
       state.loadingReg = false;
-    },
-    updatedUser(state, action) {
-      state.user = action.payload.user;
     },
     registerFailure(state){
       state.loadingReg=false;
     },
-    loginFailure(state){
-      state.loadingLogin=false;
+    updatedUser(state, action) {
+      state.user = action.payload
+    },
+    logoutUser(state){
+      state.user = ""
+    },
+    setOnlineUser(state,action){
+      state.onlineUsers = action.payload
+    },
+    setAllUsers(state, action){
+      state.allUsers = action.payload
     }
   },
 });
@@ -39,7 +49,10 @@ export const {
   registerSuccess,
   updatedUser,
   registerFailure,
-  loginFailure
+  loginFailure,
+  logoutUser,
+  setOnlineUser,
+  setAllUsers
 } = authSlice.actions;
 export const loginUser = (credentials) => async (dispatch) => {
   dispatch(loginStart());
@@ -47,13 +60,13 @@ export const loginUser = (credentials) => async (dispatch) => {
     const res = await axios.post(`${BASEURL}/users/login`, credentials, {
       withCredentials: true,
     });
-    dispatch(updateUser(res.data.data));
-    setData(res);
+
+    dispatch(updatedUser(res.data.data));
+    window.localStorage.setItem("token", res.data.token);
+
     return { success: true };
   } catch (error) {
-    const err = error?.response?.data?.message
-    ? error.response.data.message
-    : error.message;
+    const err = error?.response?.data?.message? error.response.data.message : error.message;
       dispatch(loginFailure())
     return { success: false, error: err };
   }
@@ -66,13 +79,11 @@ export const registerUser = (credentails) => async (dispatch) => {
       withCredentials: true,
     });
 
-  dispatch(updateUser(res.data.data));
-   setData(res);
+  dispatch(updatedUser(res.data.data));
+  window.localStorage.setItem("token", res.data.token);
     return { success: true };
   } catch (error) {
-    const err = error?.response?.data?.message
-      ? error.response.data.message
-      : error.message;
+    const err = error?.response?.data?.message? error.response.data.message : error.message;
       dispatch(registerFailure())
     return { success: false, error: err };
   }
@@ -80,7 +91,6 @@ export const registerUser = (credentails) => async (dispatch) => {
 
 export const updateUser = (credentails) => async (dispatch) => {
   
-  const token = window.localStorage.getItem("token");
   try {
     const res = await axios.post(
       `${BASEURL}/users/updateMe`,
@@ -88,43 +98,43 @@ export const updateUser = (credentails) => async (dispatch) => {
       {
         withCredentials: true,
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${window.localStorage.getItem("token")}`,
         },
       }
     );
     dispatch(updatedUser(res.data.data));
     
-    setData(res);
-    window.localStorage.setItem("token", token);
     return {success:true}
   } catch (error) {
     
-    const err = error?.response?.data?.message
-      ? error.response.data.message
-      : error.message;
+    const err = error?.response?.data?.message ? error.response.data.message : error.message;
 
     return { success: false, error: err };
   }
 };
-export const addUser = (credentails) => async () => {
-  const token = window.localStorage.getItem("token");
-
+export const fetchUser = () => async (dispatch) => {
+  
   try {
-     await axios.post(`${BASEURL}/users/`, credentails, {
-      withCredentials: true,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return { success: true };
+    const res = await axios.get(
+      `${BASEURL}/users/me`,
+      {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+        },
+      }
+    );
+    dispatch(updatedUser(res.data.user));
+    return {success:true}
   } catch (error) {
-    const err = error?.response?.data?.message
-      ? error.response.data.message
-      : error.message;
+    
+    const err = error?.response?.data?.message ? error.response.data.message : error.message;
+
     return { success: false, error: err };
   }
 };
-export const fetchUser = ()=>async()=>{
+
+export const fetchAll = ()=>async(dispatch)=>{
   const token = window.localStorage.getItem("token");
   try{
     const response = await axios.get(`${BASEURL}/users/`, {
@@ -133,7 +143,9 @@ export const fetchUser = ()=>async()=>{
         Authorization: `Bearer ${token}`,
       },
     });
-    return { success: true, users:response.data.users };
+    console.log(response);
+    dispatch(setAllUsers(response.data.users));
+    return { success: true};
   }catch(error){
     const err = error?.response?.data?.message
     ? error.response.data.message
@@ -141,46 +153,6 @@ export const fetchUser = ()=>async()=>{
   return { success: false, error: err };
   }
 }
-export const deleteUser = (id)=>async()=>{
-  const token = window.localStorage.getItem("token");
-  try{
-     await axios.delete(`${BASEURL}/users/${id}`, {
-      withCredentials: true,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    
-    return { success: true };
-  }catch(error){
-    const err = error?.response?.data?.message
-    ? error.response.data.message
-    : error.message;
-  return { success: false, error: err };
-  }
-}
-export const editUser = (credentials)=>async()=>{
-  const token = window.localStorage.getItem("token");
-  try{
-     await axios.patch(`${BASEURL}/users/${credentials.id}`, credentials.values,{
-      withCredentials: true,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
 
-    return { success: true };
-  }catch(error){
-    const err = error?.response?.data?.message
-    ? error.response.data.message
-    : error.message;
-  return { success: false, error: err };
-  }
-}
-const setData = (res)=>{
-  window.localStorage.setItem("token", res.data.token);
-  window.localStorage.setItem("name", res.data.data.user.name);
-  window.localStorage.setItem("email", res.data.data.user.email);
-}
 
 export default authSlice.reducer;

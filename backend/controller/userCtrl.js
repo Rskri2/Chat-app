@@ -58,7 +58,7 @@ exports.loginUser = catchAsync(async (req, res, next) => {
 });
 
 exports.fetchUser = catchAsync(async (req, res, next) => {
-  let users = await User.find({ role: "Employee" });
+  const  users = await User.find();
  
   res.status(200).json({
     status:"success",
@@ -84,6 +84,7 @@ exports.logout = catchAsync(async (req, res, next) => {
   res.status(200).json({ status: "success" });
 });
 exports.myAccount = catchAsync(async (req, res, next) => {
+
   res.status(200).json({
     status: "success",
     user: req.user,
@@ -106,7 +107,7 @@ exports.protect = catchAsync(async (req, res, next) => {
     );
   }
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-
+  
   const freshUser = await User.findById(decoded.id);
   if (!freshUser) {
     return next(

@@ -1,8 +1,8 @@
 const path = require('path');
 const morgan = require('morgan')
 const dotenv = require('dotenv');
-const {server} = require('./Socket')
 dotenv.config({ path:'./config.env' });
+const {server} = require('./Socket');
 const app = require('./app');
 const PORT = 5000;
 
