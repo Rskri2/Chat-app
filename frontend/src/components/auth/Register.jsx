@@ -67,7 +67,7 @@ const navigate = useNavigate();
             
 
               <div className="text-sm font-bold flex justify-center text-gray-900 sm:text-2xl md:text-4xl pt-16">
-                Welcome to EduTrack
+                Welcome to ChatApp
               </div>
 
               <div className="mt-4 text-xl leading-relaxed flex justify-center text-gray-500">

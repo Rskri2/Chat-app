@@ -10,7 +10,7 @@ const userRouter = require(`${__dirname}/routes/userRoutes`);
 const errorControllers = require(`${__dirname}/controller/errorCtrl`);
 
 app.use(cors({
-  origin:"http://localhost:5173",
+  origin:process.env.FRONTEND_URL,
   credentials:true
 }))
 app.use(express.json());
