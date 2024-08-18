@@ -5,6 +5,7 @@ import HomePage from "./components/HomePage";
 import Page from "./components/Page";
 import ProtectedRoute from "./ProtectedRoute";
 import ChatLayout  from "./components/auth/ChatLayout"
+import ChatHome from "./components/auth/ChatHome";
 import {Result }from 'antd'
 
 function App() {
@@ -18,7 +19,10 @@ function App() {
           element={<HomePage>{<Register />}</HomePage>}
         />
         <Route element={<ProtectedRoute />}>
-          <Route path="/my-account/:id?" element={<ChatLayout />} />
+          <Route path="/my-account" element={
+            <ChatHome />
+          } />
+          <Route path="/my-account/:id" element={<ChatLayout />} />
         </Route>
 
         <Route

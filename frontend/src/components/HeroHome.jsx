@@ -27,13 +27,12 @@ export default function HeroHome() {
               >
                 Sign up today to take control chat with others
               </p>
-                      <div className="inline-block shrink-0 rounded-md border border-black bg-black px-12 pb-3 text-sm font-medium text-white transition focus:outline-none focus:ring active:text-gray-500 h-16">
+                    
                   <div className="mt-4 text-sm text-gray-500 sm:mt-0 text-center pt-6 ">
                   
                     <Link to="/register" className="text-gray-700 underline">
                      Register
                     </Link>
-                  </div>
                   </div>
             </div>
           </div>

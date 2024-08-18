@@ -4,17 +4,15 @@ import {
   UserOutlined,
   LogoutOutlined,
   MessageOutlined,
-  SettingOutlined
+  UserAddOutlined,
 } from '@ant-design/icons';
 import { Menu, Layout, Upload,message} from 'antd';
 import io from 'socket.io-client';
 import { logoutUser,fetchUser,setOnlineUser } from '../redux/authReducer';
 import SideBar from "./SideBar";
-import MessagePage from  "./MessagePage"
-import { useParams } from 'react-router-dom';
-export  default function ChatLayout (){
+import chatlogo from "./chatlogo.jpg"
+export  default function ChatHome (){
 
-  const {id} = useParams();
 
   message.config({
     duration:2
@@ -55,7 +53,7 @@ export  default function ChatLayout (){
     },
     {
       key: '2',
-      icon: <SettingOutlined />,
+      icon: <UserAddOutlined />,
     },
     {
       key: '3',
@@ -111,11 +109,9 @@ export  default function ChatLayout (){
       />
         <SideBar socket={socketCon} 
          />
-       
-        {
-          id && 
-        <MessagePage socket={socketCon} />
-        }
+          <img src={chatlogo} style={{paddingLeft:"20%"}} className='w-full h-screen' />
+         
+
       </Layout>
     </>
   );

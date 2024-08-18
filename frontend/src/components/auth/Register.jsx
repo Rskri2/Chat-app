@@ -71,7 +71,7 @@ const navigate = useNavigate();
               </div>
 
               <div className="mt-4 text-xl leading-relaxed flex justify-center text-gray-500">
-                Are you ready to join EduTrack?
+                Are you ready to join ChatApp?
               </div>
 
               <form

@@ -9,7 +9,6 @@ const {Conversation} = require('./model/Conversation');
 const AppError = require('./utils/AppError');
 const app = express();
 const server = http.createServer(app);
-
 const io = new Server(server, {
     cors:{
         origin:process.env.FRONTEND_URL,
@@ -43,8 +42,8 @@ const getConverstionById = async(userId)=>{
     }).sort({updatedAt:-1})
     const conv = conversation.map((curr)=>{
         const unseen = curr?.msg?.reduce((prev, curr)=>{
-            const msgBy = curr?.sender?.toString()
-            if(msgBy !== userId){
+            const msgBy = curr?.sender?.toString();
+            if(msgBy === userId){
                 return  prev + (curr?.seen ? 0 : 1)
             }else{
                 return prev
@@ -64,8 +63,6 @@ const getConverstionById = async(userId)=>{
 
 
 io.on('connection', async(socket)=>{
-    
-     
      const token = socket.handshake.auth.token;
 
     const user =  await getUser(token);
@@ -75,7 +72,9 @@ io.on('connection', async(socket)=>{
     io.emit('onlineUser',Array.from(onlineUser));
 
     socket.on('message-page', async (userId)=>{
+        
         const userDetails = await User.findById(userId);
+        
         const payload = {
             _id:userDetails?._id,
             name:userDetails?.name,

@@ -144,7 +144,7 @@ export const fetchAll = ()=>async(dispatch)=>{
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(response);
+    // console.log(response);
     dispatch(setAllUsers(response.data.users));
     return { success: true};
   }catch(error){

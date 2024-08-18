@@ -1,26 +1,13 @@
 import {  useSelector } from "react-redux";
-import { Card } from 'antd';
 import PropTypes from "prop-types";
 
 const MessageCard = ({ msg  }) => {
     const { user} = useSelector((state) => state.auth);
-  const isSent = msg?.sender === user._id;
-
-  const cardStyle = {
-    margin: '10px',
-    maxWidth: '100%',
-    padding:"0px",
-    backgroundColor: isSent ? '#E0E0E0' : '#FFFFFF',
-    alignSelf: isSent ? 'flex-end' : 'flex-start',
-    wordBreak: 'break-word', 
-    flexShrink: 0,  
-    whiteSpace: 'pre-wrap',  
-  };
 
   return (
-    <Card style={cardStyle}>
-      {msg?.text}
-    </Card>
+    <div className={msg?.sender === user._id ? "text-right mb-2" :"mb-2"}>
+    <p className="bg-gray-200 text-gray-700 rounded-lg py-2 px-4 inline-block">{msg?.text}</p>
+  </div>
   );
 };
 

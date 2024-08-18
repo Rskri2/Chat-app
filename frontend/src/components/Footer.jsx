@@ -10,7 +10,7 @@ export default function Footer() {
           <div>
           </div>
           <div className="text-sm text-gray-600">
-            &copy;  Chatapp.com - All rights reserved.
+            &copy;  ChatApp.com - All rights reserved.
           </div>
         </div>
 
@@ -62,14 +62,7 @@ export default function Footer() {
                 Blog
               </Link>
             </li>
-            <li>
-              <Link
-                className="text-gray-600 transition hover:text-gray-900"
-                href="#0"
-              >
-                Careers
-              </Link>
-            </li>
+           
  
           </ul>
         </div>
