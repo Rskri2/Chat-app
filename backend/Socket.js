@@ -33,17 +33,17 @@ const getUser = async (token)=>{
 
 const getConverstionById = async(userId)=>{
    
-
     const conversation = await Conversation.find({
         "$or":[
             {sender:userId},
             {receiver:userId}
         ]
     }).sort({updatedAt:-1})
+    
     const conv = conversation.map((curr)=>{
         const unseen = curr?.msg?.reduce((prev, curr)=>{
             const msgBy = curr?.sender?.toString();
-            if(msgBy === userId){
+            if(msgBy !== userId){
                 return  prev + (curr?.seen ? 0 : 1)
             }else{
                 return prev
@@ -57,6 +57,7 @@ const getConverstionById = async(userId)=>{
         lastMsg:curr.msg[curr?.msg?.length-1]
         }
     });
+
     return conv;
 
 }
@@ -99,7 +100,6 @@ io.on('connection', async(socket)=>{
         })
         io.to(userSocketMap[user?._id]).emit('message', getConversationMessage)
         io.to(userSocketMap[userId]).emit('message', getConversationMessage)
-
         const senderConverstion = await getConverstionById(user?._id);
         const receiverConversation = await getConverstionById(userId);
         io.to(userSocketMap[user?._id]).emit('conversation', senderConverstion)
@@ -107,7 +107,6 @@ io.on('connection', async(socket)=>{
     });
 
     socket.on('new-message', async(data)=>{
-        
         let conversation = await Conversation.findOne({
             $or:[
                 {sender:data?.sender, receiver:data?.receiver},
@@ -120,8 +119,8 @@ io.on('connection', async(socket)=>{
                 receiver:data?.receiver
             })
         }
-        const message = await Message.create({text:data?.text, sender:data?.sender, receiver:data?.receiver});
-        
+        const message = await Message.create({text:data?.text, sender:data?.sender, receiver:data?.receiver, imageUrl:data?.imageUrl, videoUrl:data?.videoUrl});
+         // console.log(message);
         const updateConversation = await Conversation.updateOne({_id:conversation?._id},{
             "$push":{msg:message?._id}
         })
@@ -135,16 +134,18 @@ io.on('connection', async(socket)=>{
         io.to(userSocketMap[data?.sender]).emit('message', getConversationMessage)
         io.to(userSocketMap[data?.receiver]).emit('message', getConversationMessage)
 
-        const senderConverstion = getConverstionById(data?.sender);
-        const receiverConversation = getConverstionById(data?.receiver);
+        const senderConverstion = await getConverstionById(data?.sender);
+        const receiverConversation = await getConverstionById(data?.receiver);
 
         io.to(userSocketMap[data?.sender]).emit('conversation', senderConverstion)
         io.to(userSocketMap[data?.receiver]).emit('conversation', receiverConversation)
+        
 
     })
 
     socket.on('sidebar', async(userId)=>{
         const conv = await getConverstionById(userId);
+      //  console.log(conv)
         socket.emit('conversation', conv);
     })
 
@@ -152,7 +153,7 @@ io.on('connection', async(socket)=>{
 
         let conversation = Conversation.findOne({
             $or:[
-                {sender:user?._id, receiver:msgBy},
+                // {sender:user?._id, receiver:msgBy},
                 {sender:msgBy, receiver:user?._id}
             ]
         })
@@ -163,9 +164,9 @@ io.on('connection', async(socket)=>{
             { _id : {"$in":conversationMsg}, sender:msgBy},
             {"$set":{seen:true}}
         )
-
-        const senderConverstion = getConverstion(data?.sender);
-        const receiverConversation = getConverstion(data?.receiver);
+        
+        const senderConverstion = await getConverstionById(user?._id);
+        const receiverConversation = await getConverstionById(msgBy);
 
         io.to(userSocketMap[user?._id.toString()]).emit('conversation', senderConverstion)
         io.to(userSocketMap[msgBy]).emit('conversation', receiverConversation)

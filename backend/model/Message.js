@@ -3,6 +3,7 @@ const messageSchema = new mongoose.Schema(
   {
     text: {
       type: String,
+      default:""
     },
     sender: {
       type: mongoose.Schema.Types.ObjectId, 

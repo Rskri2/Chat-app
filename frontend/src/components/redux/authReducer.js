@@ -15,7 +15,6 @@ const authSlice = createSlice({
   reducers: {
     loginStart(state) {
       state.loadingLogin = true;
-      
     },
     loginFailure(state){
       state.loadingLogin=false;
@@ -91,7 +90,7 @@ export const registerUser = (credentails) => async (dispatch) => {
 };
 
 export const updateUser = (credentails) => async (dispatch) => {
-  
+//  console.log(credentails)
   try {
     const res = await axios.post(
       `${BASEURL}/users/updateMe`,
@@ -126,6 +125,8 @@ export const fetchUser = () => async (dispatch) => {
       }
     );
     dispatch(updatedUser(res.data.user));
+    console.log(res.data.user);
+    
     return {success:true}
   } catch (error) {
     
@@ -144,7 +145,6 @@ export const fetchAll = ()=>async(dispatch)=>{
         Authorization: `Bearer ${token}`,
       },
     });
-    // console.log(response);
     dispatch(setAllUsers(response.data.users));
     return { success: true};
   }catch(error){

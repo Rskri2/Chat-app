@@ -1,51 +1,71 @@
-import  { useEffect, useState } from 'react';4
-import { useDispatch } from "react-redux";
+import  { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from "react-redux";
 import {
-  UserOutlined,
   LogoutOutlined,
   MessageOutlined,
-  SettingOutlined
 } from '@ant-design/icons';
-import { Menu, Layout, Upload,message} from 'antd';
+import axios from 'axios'
+import { Menu, Layout, Upload,message, Button,Modal,Avatar} from 'antd';
 import io from 'socket.io-client';
-import { logoutUser,fetchUser,setOnlineUser } from '../redux/authReducer';
+import { logoutUser,fetchUser,setOnlineUser, updateUser } from '../redux/authReducer';
+
 import SideBar from "./SideBar";
 import MessagePage from  "./MessagePage"
 import { useParams } from 'react-router-dom';
+const CLOUD_NAME = import.meta.env.VITE_CLOUD_NAME;
 export  default function ChatLayout (){
-
+  
+  const {user} = useSelector((state)=>state.auth);
+  
   const {id} = useParams();
-
   message.config({
     duration:2
   })
-  const props = {
-    name: 'file',
-    action: 'https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload',
-    headers: {
-      authorization: 'authorization-text',
-    },
-    onChange(info) {
-      if (info.file.status !== 'uploading') {
-        console.log(info.file, info.fileList);
-      }
-      if (info.file.status === 'done') {
-        message.success(`${info.file.name} file uploaded successfully`);
-      } else if (info.file.status === 'error') {
-        message.error(`${info.file.name} file upload failed.`);
-      }
-    },
-  };
-
-
   const dispatch = useDispatch();
 
   const handleLogout = () => {
     window.localStorage.removeItem("token");
     dispatch(logoutUser());
     message.success("Logged out");
-  
+    
   };
+  const handleCustomRequest = async ({ file, onSuccess, onError }) => {
+
+      if (file.type.startsWith('image/') || file.type.startsWith('video/')) {
+       
+        const url = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`;
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", "chat_app");
+
+        try {
+          const response = await axios.post(url, formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          });
+          console.log(response)
+          if(response.data.secure_url) dispatch(updateUser({photo:response.data.secure_url}))
+        } catch (error) {
+          message.error(error);
+        }
+  
+      }
+    };
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+  
 
   const items2 = [
     {
@@ -55,20 +75,14 @@ export  default function ChatLayout (){
     },
     {
       key: '2',
-      icon: <SettingOutlined />,
+      icon: <Avatar src={user?.photo} />,
+      onClick:showModal
     },
     {
       key: '3',
-      icon:   <Upload {...props}>
-        <UserOutlined/>
-    </Upload>,
-      onClick:<Upload/>
-      
-    },
-    {
-      key: '4',
       icon: <LogoutOutlined />,
       onClick:handleLogout
+
     },
     
   ];
@@ -94,7 +108,6 @@ export  default function ChatLayout (){
       dispatch(setOnlineUser(onlineUser));
     })
   },[])
- 
   return (
     <>
     <Layout hasSider>
@@ -117,6 +130,16 @@ export  default function ChatLayout (){
         <MessagePage socket={socketCon} />
         }
       </Layout>
+
+      <Modal title={user?.name} open={isModalOpen} onOk={handleOk} onCancel={handleCancel} >
+      <Upload
+      customRequest={handleCustomRequest}
+      maxCount={1}
+  >
+    
+    <Button icon={<Avatar src={user?.photo}/>} className='w-full' ></Button>
+  </Upload>
+      </Modal>
     </>
   );
 }
