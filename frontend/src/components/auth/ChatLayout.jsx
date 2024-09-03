@@ -71,7 +71,6 @@ export  default function ChatLayout (){
     {
       key: '1',
       icon: <MessageOutlined/>,
-      
     },
     {
       key: '2',
