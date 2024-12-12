@@ -4,9 +4,9 @@ import Login from "./components/auth/Login";
 import HomePage from "./components/HomePage";
 import Page from "./components/Page";
 import ProtectedRoute from "./ProtectedRoute";
-import ChatLayout  from "./components/auth/ChatLayout"
-import ChatHome from "./components/auth/ChatHome";
-import {Result }from 'antd'
+import ChatLayout  from "./components/ChatComponents/ChatLayout"
+import {Result} from 'antd'
+
 
 function App() {
   return (
@@ -14,20 +14,14 @@ function App() {
       <Routes>
         <Route exact path="/" element={<HomePage>{<Page />}</HomePage>} />
         <Route path="/login" element={<HomePage>{<Login />}</HomePage>} />
-        <Route
-          path="/register"
-          element={<HomePage>{<Register />}</HomePage>}
-        />
+        <Route path="/register" element={<HomePage>{<Register />}</HomePage>}/>
         <Route element={<ProtectedRoute />}>
-          <Route path="/my-account" element={
-            <ChatHome />
-          } />
-          <Route path="/my-account/:id" element={<ChatLayout />} />
+          <Route path="/my-account" element={<ChatLayout />} />
+          
         </Route>
-
         <Route
           path="/*"
-          element={   <HomePage>
+          element={<HomePage>
             {
               <Result
                 status="404"

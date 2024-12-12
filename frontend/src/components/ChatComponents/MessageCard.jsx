@@ -1,19 +1,17 @@
-import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
-const MessageCard = ({ msg }) => {
-  const { user } = useSelector((state) => state.auth);
-
+import React from "react";
+const MessageCardComponent = ({ msg, user }) => {
   return (
     <div className={msg?.sender === user._id ? "text-right mb-2" : "mb-2"}>
       {msg?.imageUrl ? (
         <img
-          alt="Erorr fetching the image"
+          alt="Error fetching the image"
           src={msg.imageUrl}
           className="inline-block pb-10 w-1/3"
         />
       ) : msg?.videoUrl ? (
         <video
-          alt="Erorr fetching the image"
+          alt="Error fetching the image"
           src={msg.videoUrl}
           className="inline-block pb-10 w-1/3"
           controls
@@ -27,8 +25,11 @@ const MessageCard = ({ msg }) => {
   );
 };
 
-MessageCard.propTypes = {
+MessageCardComponent.propTypes = {
   msg: PropTypes.object,
+  user: PropTypes.string,
 };
+
+const MessageCard = React.memo(MessageCardComponent);
 
 export default MessageCard;

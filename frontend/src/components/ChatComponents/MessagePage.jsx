@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
 import MessageCard from "./MessageCard";
-import { useParams } from "react-router-dom";
 import { Layout, message, Upload } from "antd";
 import {
   ShareAltOutlined,
@@ -10,8 +8,8 @@ import {
 import axios from "axios";
 const CLOUD_NAME = import.meta.env.VITE_CLOUD_NAME;
 import wall from "./wall.jpeg";
-export default function MessagePage({ socket }) {
-  const { user } = useSelector((state) => state.auth);
+export default function MessagePage({ socket, user, id }) {
+
   const [Msg, setMessage] = useState("");
   const [allMessage, setAllMessages] = useState([]);
 
@@ -24,10 +22,9 @@ export default function MessagePage({ socket }) {
 
   const { Content } = Layout;
 
-  const params = useParams();
   const sendMessage = (e) => {
     e.preventDefault();
-    const Message = { text: Msg, sender: user?._id, receiver: params.id };
+    const Message = { text: Msg, sender: user?._id, receiver: id };
     socket.emit("new-message", Message);
   };
   
@@ -45,11 +42,11 @@ export default function MessagePage({ socket }) {
         });
         
        if(file.type.startsWith('image/') && response.data.secure_url){
-         const Message = { sender: user?._id, receiver: params.id, imageUrl:response.data.secure_url};
+         const Message = { sender: user?._id, receiver: id, imageUrl:response.data.secure_url};
          socket.emit("new-message", Message);
         }
         else{
-          const  Message = { sender: user?._id, receiver: params.id, videoUrl:response.data.secure_url};
+          const  Message = { sender: user?._id, receiver: id, videoUrl:response.data.secure_url};
           console.log(Message);
           socket.emit("new-message", Message);
        }
@@ -59,21 +56,24 @@ export default function MessagePage({ socket }) {
 
     }
   };
+  const handleMessage = (data) => {
+    setAllMessages(data);
+  };
   useEffect(() => {
     if (socket) {
       try {
-        socket.emit('seen', params.id);
-        socket.emit("message-page", params.id);
-
-        const handleMessage = (data) => {
-          setAllMessages(data);
-        };
+        socket.emit('seen', id);
+        socket.emit("message-page", id);
         socket.on("message", handleMessage);
       } catch (err) {
         message.error(err);
       }
     }
-  }, [socket, params.id]);
+ 
+    return()=>{
+      socket.off("message", handleMessage);
+    }
+  }, [socket, id]);
 
   return (
     <>
@@ -90,7 +90,7 @@ export default function MessagePage({ socket }) {
           {allMessage &&
             Array.isArray(allMessage) &&
             allMessage.map((msg, index) => {
-              return <MessageCard key={index} msg={msg} />;
+              return <MessageCard key={index} msg={msg} user={user}/>;
             })}
           <div className="p-4 border-t flex absolute bottom-0 w-[65%]">
             <Upload customRequest={handleCustomRequest} maxCount={1} showUploadList={false}>
@@ -124,4 +124,6 @@ export default function MessagePage({ socket }) {
 
 MessagePage.propTypes = {
   socket: PropTypes.object,
+  user:PropTypes.string,
+  id:PropTypes.object
 };

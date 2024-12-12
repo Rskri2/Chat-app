@@ -1,10 +1,9 @@
 import { Layout, Avatar, Modal, message, Badge } from "antd";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
 import { fetchAll } from "../redux/authReducer";
-export default function SideBar({ socket }) {
+export default function SideBar({ socket, setId }) {
   const [openEdit, setOpenEdit] = useState(false);
   const showModal = () => {
     setOpenEdit(true);
@@ -12,7 +11,6 @@ export default function SideBar({ socket }) {
   const handleCancelEdit = () => {
     setOpenEdit(false);
   };
-
   const { Sider } = Layout;
   const siderStyle = {
     height: "100vh",
@@ -30,29 +28,29 @@ export default function SideBar({ socket }) {
   const dispatch = useDispatch();
 
   const { allUsers } = useSelector((state) => state.auth);
-
+const extractMsg = (data) => {
+ 
+    const conversationData = data.map((conv) => {
+      if (conv?.sender?._id != user?._id) {
+        return {
+          conv,
+          userDetails: conv.sender,
+        };
+      } else 
+        return {
+          conv,
+          userDetails: conv.receiver,
+        };
+      
+    });
+    setallConversation(conversationData);
+}
   useEffect(() => {
+  
     if (socket) {
       try{
         socket.emit("sidebar", user?._id);
-        socket.on("conversation", (data) => {
-          if (data && Array.isArray(data)) {
-            const conversationData = data.map((conv) => {
-              if (conv?.sender?._id != user?._id) {
-                return {
-                  conv,
-                  userDetails: conv.sender,
-                };
-              } else {
-                return {
-                  conv,
-                  userDetails: conv.receiver,
-                };
-              }
-            });
-            setallConversation(conversationData);
-          }
-        });
+        socket.on("conversation", extractMsg);
 
       } catch(err){
         message.error(err);
@@ -63,6 +61,9 @@ export default function SideBar({ socket }) {
       if (res.error) message.error(res.error);
     };
     fetch();
+    // return ()=>{
+    //   socket.off("conversation", extractMsg);
+    // }
   }, [socket, user]);
 
   return (
@@ -86,20 +87,23 @@ export default function SideBar({ socket }) {
           {allUsers && Array.isArray(allUsers) &&
             allUsers.map((user) => {
               return (
-                <NavLink to={"/my-account" + "/" + user?._id}
+                <div 
+                onClick={()=>setId(user?._id)}
                   key={user?._id}
                    style={{ textDecoration: 'none' }}
                    className={({ isActive }) => (isActive ? 'text-blue-500' : 'text-gray-500')}
                 
                 >
-                  <div className="w-1/4">
+                  <div  className="">
                     <Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=8" />
+                  </div>
                     
-                  </div>
-                  <div className="w-full">
+                   <div className="w-full">
                     <div className="text-lg font-semibold">{user?.name}</div>
-                  </div>
-                </NavLink>
+
+                   </div>
+           
+                </div>
               );
             })}
         </Modal>
@@ -107,18 +111,21 @@ export default function SideBar({ socket }) {
         {allConversation && Array.isArray(allConversation) && 
         allConversation.map((conv) => {
           return (
-            <NavLink to = {"/my-account" + "/" + conv?.userDetails?._id}
+            <div 
+            onClick={()=>{setId(conv?.userDetails?._id)}}
+
+            // to = {"/my-account" + "/" + conv?.userDetails?._id}
               key={conv?.userDetails?._id}
-              style={{ textDecoration: 'none' }}
-              className="flex flex-row py-4 px-2 justify-center items-center border-b-2"
+              style={{ textDecoration: 'none', cursor:"pointer" }}
+              className="flex flex-row py-4 px-2 justify-center border-b-2"
              
             >
-              <div className="w-1/4">
-                <Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=8" />
-              </div>
+              
+                <Avatar className="" src="https://api.dicebear.com/7.x/miniavs/svg?seed=8" />
+              
                 <Badge count={conv?.conv?.unseenMsg}/>
-              <div className="w-full">
-                <div className="text-lg font-semibold">
+              <div className="">
+                <div className="w-full text-lg font-semibold">
                   {conv?.userDetails?.name}
                 </div>
 
@@ -126,7 +133,7 @@ export default function SideBar({ socket }) {
                   {conv?.conv?.lastMsg?.text}
                 </span>
               </div>
-            </NavLink>
+            </div>
           );
         })}
       </Sider>
@@ -136,4 +143,5 @@ export default function SideBar({ socket }) {
 
 SideBar.propTypes = {
   socket: PropTypes.object,
+  setId: PropTypes.func,
 };

@@ -50,9 +50,13 @@ exports.registerUser = catchAsync(async (req, res, next) => {
 
 exports.loginUser = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
+  console.log(email)
+  console.log(password)
   const user = await User.findOne({ email }).select("+password");
-  if (!user || !(await user.correctPassword(password, user.password)))
-    return next(new AppError("The email id or the password is invalid", 401));
+  
+  if (!user || !(await user.correctPassword(password, user.password))){
+    console.log(user)
+    return next(new AppError("The email id or the password is invalid", 401));}
   createToken(user, 201, res);
   user.password = undefined;
 });
