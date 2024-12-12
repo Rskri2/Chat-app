@@ -63,34 +63,34 @@ export default function ChatLayout() {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-  const onClick = (value)=>{; }
   const items2 = [
     {
       key: "1",
       icon: <MessageOutlined />,
-      onClick:()=>setOption(1);
+      onClick:()=>setOption(1)
+    },
+    {
+      key:"4",
+      icon:<MehOutlined/>,
+      onClick:()=>setOption(4)
+  },
+    {
+      key: "3",
+      icon: <VideoCameraOutlined />,
+      onClick:()=>setOption(3)
+    },
+    {
+      key: "5",
+      icon: <LogoutOutlined />,
+      onClick: handleLogout,
     },
     {
       key: "2",
       icon: <Avatar src={user?.photo} />,
       onClick: showModal,
     },
-    {
-      key: "3",
-      icon: <VideoCameraOutlined />,
-      onClick:()=>setOption(3);
-    },
-    {
-        key:"4",
-        icon:<MehOutlined/>,
-        onCancel:()=>setOption(4);
-    },
-    {
-      key: "5",
-      icon: <LogoutOutlined />,
-      onClick: handleLogout,
-    }
   ];
+   
   const [socketCon, setSocketCon] = useState(null);
 
   const addUser = (onlineUser) => {
@@ -114,8 +114,10 @@ export default function ChatLayout() {
     });
     socket.on("onlineUser", addUser);
     return () => {
-      socket.off('onlineUser', addUser);
-      socket.disconnect();
+      if(socket){
+          socket.off('onlineUser', addUser);
+          socket.disconnect();
+      }
   };
   }, []);
   return (
@@ -135,7 +137,7 @@ export default function ChatLayout() {
       {option != 3 && option != 4 && <SideBar setId={setId} socket={socketCon} />}
       {option != 3 && option != 4 && <ChatUser user = {user} socketCon = {socketCon} id = {id}/>}
       {option == 3 && <VideoCall socket={socketCon}/>}
-      {option == 4 && <ChatBot/>}
+      {option == 4 && <ChatBot socket={socketCon}/>}
       <Modal
         title={user?.name}
         open={isModalOpen}

@@ -61,9 +61,10 @@ const extractMsg = (data) => {
       if (res.error) message.error(res.error);
     };
     fetch();
-    // return ()=>{
-    //   socket.off("conversation", extractMsg);
-    // }
+    return ()=>{
+      if(socket)
+      socket.off("conversation", extractMsg);
+    }
   }, [socket, user]);
 
   return (
@@ -72,7 +73,7 @@ const extractMsg = (data) => {
         <div className="border-b-2 py-4 px-2">
           <input
             type="text"
-            placeholder="Explore more users.."
+            placeholder="Explore all users.."
             className="py-2 px-2 border-2 border-gray-200 rounded-2xl w-full"
             onClick={showModal}
           />
@@ -113,8 +114,6 @@ const extractMsg = (data) => {
           return (
             <div 
             onClick={()=>{setId(conv?.userDetails?._id)}}
-
-            // to = {"/my-account" + "/" + conv?.userDetails?._id}
               key={conv?.userDetails?._id}
               style={{ textDecoration: 'none', cursor:"pointer" }}
               className="flex flex-row py-4 px-2 justify-center border-b-2"
